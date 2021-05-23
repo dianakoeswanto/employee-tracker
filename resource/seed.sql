@@ -58,3 +58,14 @@ CREATE TABLE employee(
 
 INSERT INTO employee (first_name, last_name, role_id)
 VALUES ("Sam", "Benson", 2);
+
+
+
+/* View displaying employee and manager, role, and department */
+CREATE VIEW employee_by_manager
+AS SELECT e.id, e.first_name, e.last_name, CONCAT(m.first_name, ' ', m.last_name) as manager, e.manager_id, title, salary, department.name as department
+FROM role, department, employee as e
+LEFT JOIN employee as m
+  ON e.manager_id = m.id
+WHERE role.id = e.role_id
+AND role.department_id = department.id

@@ -6,7 +6,12 @@ const initialize = async () => {
         console.log(rendered);
         
         const prompt = new Prompt();
-        prompt.start();    
+        try {
+                prompt.start();    
+        } catch (err) {
+                console.log(`An error has occured. Please ensure that there are no other 
+                        entities associated to the entity you are trying to remove`);
+        }
 }
 
 initialize();

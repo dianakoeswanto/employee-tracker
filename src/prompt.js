@@ -1,7 +1,8 @@
-const DepartmentApplication = require('./application/department_application');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
+const DepartmentApplication = require('./application/department_application');
 const RoleApplication = require('./application/role_application');
+const EmployeeApplication = require('./application/employee_application');
 
 const questions = {
     type: 'list',
@@ -16,6 +17,10 @@ const questions = {
         "Delete Role",
         "Add Employee",
         "View All Employees",
+        "Delete Employee",
+        "Update Manager",
+        "Update Employee's Role",
+        "View Employee's by Manager",
         "Quit"
     ]
 }
@@ -24,6 +29,7 @@ class Prompt {
     constructor() {
         this.departmentApp = new DepartmentApplication();
         this.roleApp = new RoleApplication();
+        this.employeeApplication = new EmployeeApplication();
     }
 
     async start() {
@@ -51,6 +57,24 @@ class Prompt {
                 break;
             case("Delete Role"):
                 await this.roleApp.delete();
+                break;
+            case("Add Employee"):
+                await this.employeeApplication.add();
+                break;
+            case("View All Employees"):
+                console.table(await this.employeeApplication.getAll());
+                break;
+            case("Delete Employee"):
+                await this.employeeApplication.delete();
+                break;
+            case("Update Manager"):
+                await this.employeeApplication.updateManager();
+                break;
+            case("Update Employee's Role"):
+                await this.employeeApplication.updateRole();
+                break;
+            case("View Employee's by Manager"):
+                console.table(await this.employeeApplication.viewByManager());
                 break;
             default:
                 console.log("Good Bye");

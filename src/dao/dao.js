@@ -12,12 +12,8 @@ const connection = mysql.createConnection({
 
 const query = util.promisify(connection.query).bind(connection)
 
-const get = async (sql) => {
-    // try{
-        return await query(sql);
-    // } finally {
-        // connection.end();
-    // }
+const get = async (sql, params) => {
+    return await query(sql, params);
 }
 
 const save = async (sql, params) => {
@@ -25,7 +21,12 @@ const save = async (sql, params) => {
 }
 
 const remove = async(sql, params) => {
-    return await query(sql, params);
+    return await query(sql, params, (err) => {
+        const msg = err ? "Unable to remove as there could be role / employee associated to this entity you are trying to remove"
+                        : "Removed successfully";
+
+        console.log(msg);
+      });
 }
 
 connection.connect((err) => {

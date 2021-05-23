@@ -1,41 +1,66 @@
-const Employee = require('../entity/employee');
-const {get} = require('./dao');
+const {get, save, remove} = require('./dao');
 
 class EmployeeDAO {
-    constructor(employee) {
-        this.employee = employee;
+    async add(firstname, lastname, roleId, managerId) {
+        const query = 'INSERT INTO employee SET ?';
+        const params = {
+            first_name: firstname,
+            last_name: lastname,
+            role_id: roleId,
+            manager_id: managerId ? managerId : null
+        }
+
+        await save(query, params);
     }
 
-    add() {
-        console.log('Inserting a new employee...\n');
-        const query = connection.query(
-            'INSERT INTO employee SET ?',
+    async getAll() {
+        return await get("select * from employee_by_manager");
+    }
+
+    async getManagers() {
+        return await get(`SELECT DISTINCT(e.manager_id) as id, m.first_name, m.last_name 
+        FROM employee e
+        INNER JOIN employee m
+        ON e.manager_id = m.id`);
+    }
+
+    async getByManager(managerId) {
+        return await get("select * from employee_by_manager where ?", {
+            manager_id: managerId
+        });
+    }
+
+    async delete(employeeId) {
+        return await remove("delete from employee where ?", 
+        {
+            id: Number(employeeId)
+        });
+    }
+
+    async updateManager(employeeToUpdateId, newManagerId) {
+        return await save('UPDATE employee SET ? WHERE ?', 
+        [
             {
-                first_name: this.employee.first_name,
-                last_name: this.employee.last_name,
-                role_id: this.employee.role.id,
-                manager_id: this.employee.manager ? this.employee.manager.id : null
+                manager_id: Number(newManagerId),
             },
-            (err, res) => {
-                if (err) throw err;
-                console.log(`${res.affectedRows} employee inserted!\n`);
+            {
+                id: Number(employeeToUpdateId)
             }
-        );
-
-        // logs the actual query being run
-        console.log(query.sql);
+        ])
     }
 
-    static async getManagers() {
-        const managers = await get("select * from employee where manager_id is null");
-        return managers.map((manager) => {
-            return new Employee(manager.id, manager.first_name, manager.last_name);
-        })
+    async updateRole(employeeToUpdateId, newRoleId) {
+        return await save('UPDATE employee SET ? WHERE ?', 
+        [
+            {
+                role_id: Number(newRoleId),
+            },
+            {
+                id: Number(employeeToUpdateId)
+            }
+        ])
     }
 
-    delete() {
-        
-    }
 }
 
 module.exports = EmployeeDAO;
