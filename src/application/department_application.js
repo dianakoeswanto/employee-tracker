@@ -35,6 +35,23 @@ class DepartmentApplication {
         ];
     }
 
+    async whichDepartment(departments, questionMsg) {
+        const question = [
+            {
+                type: 'list',
+                name: 'name',
+                message: questionMsg,
+                choices() {
+                    const deptToRemove =  departments.map((dpt) => {return dpt.name});
+                    deptToRemove.push(new inquirer.Separator());
+                    return deptToRemove;
+                } 
+            }
+        ];
+
+        return await inquirer.prompt(question);
+    }
+
     async add() {
         const answer = await inquirer.prompt(DepartmentApplication.addQuestions());
         departmentDAO.add(answer.name);
@@ -48,13 +65,22 @@ class DepartmentApplication {
     async delete() {
         await this.getAll();
 
-        const answer = await inquirer.prompt(DepartmentApplication.deleteQuestions(this.departments));
+        const answer = await this.whichDepartment(this.departments);
         const departmentToDelete = this.departments.filter((dpt) => {
             return dpt.name === answer.name;
         });
 
         departmentDAO.delete(departmentToDelete.pop());
     }
+
+    async viewBudget() {
+        await this.getAll();
+        
+        const answer = await this.whichDepartment(this.departments);
+        return await departmentDAO.viewBudgetByDepartment(answer.name);
+    }
+
+
 }
 
 module.exports = DepartmentApplication;

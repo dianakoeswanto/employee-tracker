@@ -21,7 +21,9 @@ const questions = {
         "Update Manager",
         "Update Employee's Role",
         "View Employee's by Manager",
-        "Quit"
+        "View Budget by Department",
+        "Quit",
+        new inquirer.Separator(),
     ]
 }
 
@@ -75,6 +77,9 @@ class Prompt {
                 break;
             case("View Employee's by Manager"):
                 console.table(await this.employeeApplication.viewByManager());
+                break;
+            case("View Budget by Department"):
+                console.table(await this.departmentApp.viewBudget());
                 break;
             default:
                 console.log("Good Bye");

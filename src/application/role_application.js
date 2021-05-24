@@ -45,6 +45,7 @@ class RoleApplication {
                 message: 'Which role would you like to remove?',
                 choices() {
                     const roleToRemove =  roles.map((role) => {return role.title});
+                    roleToRemove.push(new inquirer.Separator());
                     return roleToRemove;
                 } 
             }

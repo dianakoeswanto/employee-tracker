@@ -21,6 +21,13 @@ class DepartmentDAO {
 
         console.log(rowsAffected.affectedRows);
     }
+
+    async viewBudgetByDepartment(departmentName) {
+        return await get(`select DISTINCT(department), 
+                                    SUM(salary) over (partition by department) as total
+                          FROM employee_by_manager
+                          WHERE ?`, { department: departmentName });
+    }
 }
 
 module.exports = DepartmentDAO;
