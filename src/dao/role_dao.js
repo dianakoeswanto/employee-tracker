@@ -7,8 +7,6 @@ class RoleDAO {
             salary,
             "department_id": departmentID
         });
-
-        console.log(successful.affectedRows);
     }
 
     async getAll() {
@@ -19,8 +17,6 @@ class RoleDAO {
         const rowsAffected = await remove('DELETE from role where ?', {
             id: role.id
         });
-
-        console.log(rowsAffected.affectedRows);
     }
 }
 

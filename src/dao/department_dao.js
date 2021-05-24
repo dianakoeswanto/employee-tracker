@@ -5,8 +5,6 @@ class DepartmentDAO {
         const successful = await save('INSERT INTO department SET ?', {
             name: name
         });
-
-        console.log(successful.affectedRows);
     }
 
     async getAll() {
@@ -14,12 +12,9 @@ class DepartmentDAO {
     }
 
     async delete(department) {
-        console.log(`Dept id: ${JSON.stringify(department)}`);
         const rowsAffected = await remove('DELETE from department where ?', {
             id: department.id
         });
-
-        console.log(rowsAffected.affectedRows);
     }
 
     async viewBudgetByDepartment(departmentName) {

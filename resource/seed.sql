@@ -8,7 +8,7 @@ CREATE TABLE department(
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
-)
+);
 
 INSERT INTO department (name) VALUES ("Engineering");
 INSERT INTO department (name) VALUES ("Sales");
@@ -23,7 +23,7 @@ CREATE TABLE role(
     department_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (department_id) REFERENCES department (id)
-)
+);
 
 INSERT INTO role (title, salary, department_id) 
 VALUES ("Software Engineer", 150000, 1);
@@ -68,4 +68,4 @@ FROM role, department, employee as e
 LEFT JOIN employee as m
   ON e.manager_id = m.id
 WHERE role.id = e.role_id
-AND role.department_id = department.id
+AND role.department_id = department.id;

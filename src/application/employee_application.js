@@ -145,8 +145,6 @@ class EmployeeApplication {
     async viewByManager() {
         const currentManagers = await employeeDAO.getManagers();
 
-        console.log(currentManagers);
-
         const selectedManagerId = await this.whichEmployee(currentManagers, 
                                         "Please select a manager?");
         

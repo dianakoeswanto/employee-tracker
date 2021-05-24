@@ -14,7 +14,7 @@ class EmployeeDAO {
     }
 
     async getAll() {
-        return await get("select * from employee_by_manager");
+        return await get("select * from employee_by_manager order by id");
     }
 
     async getManagers() {
@@ -25,7 +25,7 @@ class EmployeeDAO {
     }
 
     async getByManager(managerId) {
-        return await get("select * from employee_by_manager where ?", {
+        return await get("select * from employee_by_manager where ? order by id", {
             manager_id: managerId
         });
     }
